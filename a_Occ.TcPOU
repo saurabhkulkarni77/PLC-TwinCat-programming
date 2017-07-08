@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="a_Occ" Id="{2853f849-ce9f-4b69-8ed5-a79f9a227146}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM a_Occ
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**-----[1.] OCCUPANCY BASED LIGHTING CONTROL -----------------------------**)
+
+IF iI>64000 THEN
+	bI:=FALSE;
+ELSIF iI<64000 AND iI>0 THEN
+    bI:=TRUE;	
+END_IF
+
+IF iII>64000 THEN
+	bII:=FALSE;
+ELSIF iII<64000  AND iI>0 THEN
+    bII:=TRUE;	
+END_IF
+
+(**LOCAL : Latches Defined**)
+bIc:=(bI) OR (bIc AND bII);
+bIIc:=(bII) OR (bIIc AND bI);
+(**-----------------------**)
+
+(**LOCAL : Input Status Word "iB" Defined bit by bit**)
+iB.3:=bI;
+iB.2:=bII;
+iB.1:=bIc;
+iB.0:=bIIc;
+(**-------------------------------------------------**)
+
+(**LOCAL : Counter Triggers Defined according to value of "iB" **)
+CASE iB OF
+	7: (**Entry Completed**)
+	  MyTriggUp(CLK:=TRUE , Q=> bUpCount);
+	11: (**Exit Completed**)
+      MyTriggDown(CLK:=TRUE , Q=> bDownCount); 
+ELSE
+      MyTriggUp(CLK:=FALSE , Q=> bUpCount);
+	  MyTriggDown(CLK:=FALSE , Q=> bDownCount); 
+END_CASE
+(**------------------------------------------------------------**)
+
+(**LOCAL : Occupancy Counted as "iCount" **)
+IF bUpCount THEN
+	iCount:=iCount+1;(**One person Enters**)
+END_IF
+IF bDownCount THEN
+	iCount:=iCount-1;(**One person Leaves**)
+END_IF
+(**--------------------------------------**)
+
+(**LOCAL : Occupancy variable Defined as "bOcc" **)
+IF iCount<>0 THEN
+	bOcc:=TRUE;(**Room Occupied**)
+ELSE
+    bOcc:=FALSE;(**Room Empty**)	
+END_IF
+(**--------------------------------------------**)
+
+(**OUTPUT : Relay Status Defined as "bOffOcc" **)
+bOffOcc:=(NOT(bAuto AND bOcc))AND (NOT bManl);
+(**-------------------------------------------**)
+(**------------------------------------------------------------------------**)]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

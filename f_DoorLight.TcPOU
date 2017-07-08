@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="f_DoorLight" Id="{5ebf5d78-c1a0-4238-9395-36f91afb4c5c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM f_DoorLight
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**-----[6.] DOOR LIGHT CONTROL ---------------------------------------**)
+(**LOCAL : Light-Intensity-Low Bit Defined as "bDLT" **)
+IF iDL >32400 THEN
+	bDLT:=FALSE;
+ELSIF (iDL<32400) AND (iDL>10) THEN
+	bDLT:=TRUE;
+END_IF
+(**--------------------------------------------------**)
+
+(**OUTPUT : Light Trigger Defined as "bDLO" **)
+bDLO:=(bDLT OR bDLmanl) AND (NOT bDLmanlO);
+(**-----------------------------------------**)
+(**--------------------------------------------------------------------**)
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

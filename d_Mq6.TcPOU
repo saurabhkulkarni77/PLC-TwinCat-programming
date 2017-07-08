@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="d_Mq6" Id="{3f7682e7-5654-418c-960d-d3f7ef8405cf}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM d_Mq6
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**-----[4.] MQ6, LPG GAS LEAKAGE DETECTION ---------------------------------------**)
+(**LOCAL : Leakage-detected Bit Defined as "bMq6T" **)
+IF iMq6 < 6000 THEN
+	bMq6T:=FALSE;
+ELSIF iMq6 > 6000	THEN
+	bMq6T:=TRUE;
+END_IF
+(**------------------------------------------------**)
+
+(**OUTPUT : Buzzer Output value Defined **)
+bMq6latch:=bMq6T OR (bMq6latch AND (NOT bMq6dismiss));
+bMq6O:=bMq6latch;
+(**-------------------------------------**)
+(**------------------------------------------------------------------------------------**)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

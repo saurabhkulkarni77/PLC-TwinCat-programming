@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="MAIN" Id="{9725f9a7-5db3-4456-99d4-0ef3febfaaef}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	(**bHazard : LOCAL GUI Bit for Displaying system security status**)
+	bHazard: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**MODULES CALLED------------------------------------------**)
+a_Occ();
+b_Susp();
+c_Mq2();
+d_Mq6();
+e_TankLvl();
+f_DoorLight();
+(**--------------------------------------------------------**)
+
+
+(**LOCAL GUI BITS DEFINED----------------------------------**)
+bHazard:= (bSMTlatch) OR (bMq2latch) OR (bMq6latch) ;
+bOffOccn:=NOT bOffOcc;
+bFull:=bH AND bL;
+bPart:=bL AND (NOT bH);
+bLow:=NOT (bH OR bL);
+(**--------------------------------------------------------**)
+
+
+(**LOCAL LOGIN PAGE VARIABLES DEFINED----------------------**)
+(**Password-Correct? Trigger Defined**)
+iPSet:=1234;
+IF iPWord=iPSet THEN
+	bPass:=TRUE;
+ELSE
+	bPass:=FALSE;
+END_IF
+PWordTrigg(CLK:=bPass , Q=> bDoLN);
+
+(**Let-LogIn? Variable Defined**)
+bInV:=bDoLN OR (bInV AND (NOT bDoLO));
+IF bDoLO THEN
+	iPWord:= 0;
+	bInV:=FALSE;
+END_IF
+(**--------------------------------------------------------**)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

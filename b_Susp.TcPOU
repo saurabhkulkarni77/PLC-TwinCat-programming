@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="b_Susp" Id="{21b4376a-6fd9-4d90-98c1-f29363507cb6}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM b_Susp
+VAR
+	///*tTimer0 : LOCAL Buzzer Timer Defined*
+	tTimer0: Timer0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**-----[2.] SUSPICIOUS MOVEMENT DETECTION --------------------------------**)
+(**LOCAL : Movement True Bit Defined as "bSMT" **)
+IF iSM >65400 THEN
+	bSMT:=FALSE;
+ELSIF (iSM<65400) AND (iSM>10) THEN
+	bSMT:=TRUE;
+END_IF
+(**--------------------------------------------**)
+
+(**LOCAL : tTimer0 Triggered-------------------**)
+tTimer0(bTriggt:= TRUE);
+(**--------------------------------------------**)
+
+(**LOCAL : Latched Variable Defined as "bSMTlatch" **)
+bSMTlatch:=bSMT OR (bSMTlatch AND (NOT bSMdismiss));
+(**------------------------------------------------**)
+
+(**OUTPUT : Time varying Buzzer Output value, In Reference to tTimer0 Time **)
+IF bSMTlatch THEN
+   IF (tTime < T#1S) OR ((tTime < T#4S) AND (tTime > T#2S)) THEN
+	   bSMO:=TRUE;
+   ELSE
+       bSMO:=FALSE;  
+   END_IF
+ELSE
+   bSMO:=FALSE;   
+END_IF
+(**------------------------------------------------------------------------**)
+(**------------------------------------------------------------------------**)]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

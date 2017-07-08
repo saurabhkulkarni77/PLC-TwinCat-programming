@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="e_TankLvl" Id="{381ee7e4-95e5-400c-9d5b-372d36608a1c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM e_TankLvl
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**-----[5.] TANK LEVEL CONTROL ---------------------------------------**)
+(**LOCAL : Input status word Defined bit by bit **)
+iBTank.0:=bH;
+iBTank.1:=bL;
+iBTank.2:=bDir;
+(**---------------------------------------------**)
+
+(**LOCAL : Level direction variable Defined, TRUE for falling level **)
+bDir:=(bH AND bL) OR (bDir AND bL);
+(**-----------------------------------------------------------------**)
+
+(**LOCAL : Auto Trigger Defined according to value of Input Status Word **)
+CASE iBTank OF
+	0:
+	  bTrAuto:=TRUE;
+	2:
+	  bTrAuto:=TRUE;
+	6:
+	  bTrAuto:=FALSE;
+	7:
+	  bTrAuto:=FALSE;
+END_CASE
+(**--------------------------------------------------------------------**)
+
+(**OUTPUT : Motor Trigger Variable Defined **)
+bTrig:= (bTrAuto OR bLvlManl) AND (NOT bLvlManlOff);
+(**----------------------------------------**)
+(**-------------------------------------------------------------------**)
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

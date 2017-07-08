@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <GVL Name="GVL" Id="{304ddb3d-bb53-4f51-80ce-042a8f6c7ca2}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	///*1. OCCUPANCY BASED LIGHTING CONTROL GVL---------------------------*
+	///*bI, bII : INPUT IR Sensor variables*
+	iI AT %IW8: WORD;
+	iII AT %IW9: WORD;
+	bI: BOOL;
+	bII: BOOL;
+	///*bIc, bIIc : LOCAL Latched variables variables*
+	bIc: BOOL;
+	bIIc: BOOL;
+	///*iB : LOCAL Direction Word*
+	iB: WORD;
+	///*iCount : LOCAL Room Occupant Count*
+	iCount: WORD;
+	///*bOcc : LOCAL Occupancy variable*
+	bOcc: BOOL;
+	///*bIPointer, bIIPointer : LOCAL I & II Pointers*
+	bIP: BOOL;
+	bIIP: BOOL;
+	///*MyTriggUp, MyTriggDown: LOCAL Counter Triggers*
+	MyTriggUp: R_TRIG;
+	MyTriggDown: R_TRIG;
+	///*bUpCount, bDownCount: LOCAL Counter Trigger Variables*
+	bUpCount: BOOL;
+	bDownCount: BOOL;
+	///*bAuto, bManl : LOCAL Automate? Status and Manual? Status Variable*
+	bAuto: BOOL;
+	bManl: BOOL;
+	///*bOffOcc : OUTPUT Relay Off variable, True implies Power off*
+	bOffOcc AT %QX1.0: BOOL;
+	///*bOffOccn : LOCAL Power Status Variable*
+	bOffOccn AT %QX1.2: BOOL;
+	///*------------------------------------------------------------------*
+	///*2. SUSPICIOUS MOVEMENT DETECTION GVL------------------------------*
+	///*iSM : INPUT Sensor reading*
+	iSM AT %IW9: WORD;
+	///*bSMT : LOCAL Sensor High Bit*
+	bSMT: BOOL;
+	///*bSMdismiss : LOCAL Dismiss button Bit*
+	bSMdismiss: BOOL;
+	///*bSMTlatch : LOCAL Latched Variable*
+	bSMTlatch: BOOL;
+	///*bSMO : OUTPUT Buzzer Bit*
+	bSMO AT %QX2.1: BOOL;
+	///*------------------------------------------------------------------*
+	///*3. MQ2, SMOKE/ FIRE DETECTION GVL---------------------------------*
+	///*iMq2 : INPUT Sensor reading*
+	iMq2 AT %IW3: WORD;
+	///*bMq2T : LOCAL Sensor High Bit*
+	bMq2T: BOOL;
+	///*bMq2dismiss : LOCAL Dismiss button Bit*
+	bMq2dismiss: BOOL;
+	///*bMq2latch : LOCAL Latched Variable*
+	bMq2latch: BOOL;
+	///*bMq2O : OUTPUT Buzzer Bit*
+	bMq2O AT %QX3.1: BOOL;
+	///*------------------------------------------------------------------*
+	///*4. MQ6, LPG GAS LEAKAGE DETECTION GVL-----------------------------*
+	///*iMq6 : INPUT Sensor reading*
+	iMq6 AT %IW4: WORD;
+	///*bMq6T : LOCAL Sensor High Bit*
+	bMq6T: BOOL;
+	///*bMq6dismiss : LOCAL Dismiss button Bit*
+	bMq6dismiss: BOOL;
+	///*bMq6latch : LOCAL Latched Variable*
+	bMq6latch: BOOL;
+	///*bMq6O : OUTPUT Buzzer Bit*
+	bMq6O AT %QX4.1: BOOL;
+	///*------------------------------------------------------------------*
+	///*5. TANK LEVEL CONTROL GVL------------------------------------------*
+	///*bH, bL : INPUT level high & low switches*
+	bH AT %IX5.1: BOOL;
+	bL AT %IX5.2: BOOL;
+	///*bDir : LOCAL Level rise/fall Variable, True for falling level*
+	bDir: BOOL;
+	///*iBTank : LOCAL Level status Word*
+	iBTank: INT;
+	///*bLvlManl, bLvlManlOff: LOCAL Manual ON and Manual OFF Variables*
+	bLvlManl: BOOL;
+	bLvlManlOff: BOOL;
+	///*bTrAuto : LOCAL Auto Trigger Bit*
+	bTrAuto: BOOL;
+	///*bTrig : OUTPUT Pump Trigger*
+	bTrig AT %QX5.1: BOOL;
+	///*bFull, bPart, bLow : LOCAL Tank Full, Partial and Low Bits*
+	bFull: BOOL;
+	bPart: BOOL;
+	bLow: BOOL;
+	///*------------------------------------------------------------------*
+	///*6. DOOR LIGHT CONTROL GVL-----------------------------------------*
+	///*iDL : INPUT Sensor reading*
+	iDL AT %IW6: WORD;
+	///*bDLT : LOCAL Sensor High Bit*
+	bDLT: BOOL;
+	///*bDLmanl : LOCAL Manual ON/OFF switch Variables *
+	bDLmanl: BOOL;
+	bDLmanlO: BOOL;
+	///*bDLO : OUTPUT Buzzer Bit*
+	bDLO AT %QX6.3: BOOL;
+	///*------------------------------------------------------------------*
+	///*tTime : LOCAL Timer ET time*
+	tTime: TIME;
+	///*---------------------------*
+	///*00. LOGIN PAGE GVL---------------------------------------------*
+	///*iPSet : 	LOCAL Set Password*
+	iPSet: WORD;
+	///*iPWord : LOCAL Entered Password*
+	iPWord: WORD;
+	///*bPass : 	LOCAL Password-Correct? Trigger Variable*
+	bPass: BOOL;
+	///*bDoLN : 	LOCAL Password-Correct? Output Trigger bit*
+	bDoLN: BOOL;
+	///*bDoLO : 	LOCAL LogOut? Variable*
+	bDoLO: BOOL;
+	///*bInV : 	LOCAL Let-LogIn? Variable*
+	bInV: BOOL;
+	///*PWordTrigg: LOCAL Password Trigger*
+	PWordTrigg: R_TRIG;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

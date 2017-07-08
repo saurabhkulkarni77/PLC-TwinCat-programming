@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4018.9">
+  <POU Name="c_Mq2" Id="{71403d3c-5007-45e7-9811-55a19c5825b0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM c_Mq2
+VAR
+	///*tTimer0 : LOCAL Buzzer Timer Defined*
+	tTimer0: Timer0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(**-----[3.] MQ2, SMOKE/ FIRE DETECTION ---------------------------------------**)
+(**LOCAL : Smoke-detected Bit Defined as "bMq2T" **)
+IF iMq2 < 6000 THEN
+	bMq2T:=FALSE;
+ELSIF iMq2>6000	THEN
+	bMq2T:=TRUE;
+END_IF
+(**---------------------------------------------**)
+
+(**LOCAL : tTimer0 Triggered-------------------**)
+tTimer0(bTriggt:= TRUE);
+(**--------------------------------------------**)
+
+(**LOCAL : Latched Variable Defined as "bMq2latch" **)
+bMq2latch:=bMq2T OR (bMq2latch AND (NOT bMq2dismiss));
+(**------------------------------------------------**)
+
+(**OUTPUT : Time varying Buzzer Output value, In Reference to tTimer0 Time **)
+IF bMq2latch THEN
+   IF (tTime < T#1S) OR ((tTime < T#4S) AND (tTime > T#2S)) THEN
+	   bMq2O:=TRUE;
+   ELSE
+       bMq2O:=FALSE;  
+   END_IF
+ELSE
+   bMq2O:=FALSE;   
+END_IF
+(**------------------------------------------------------------------------**)
+(**----------------------------------------------------------------------------**)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
